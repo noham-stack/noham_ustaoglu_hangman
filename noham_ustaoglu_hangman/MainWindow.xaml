@@ -1,0 +1,349 @@
+﻿<Window x:Class="NohamCalculette.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Hangman"
+        Height="720"
+        Width="1100"
+        MinHeight="650"
+        MinWidth="950"
+        WindowStartupLocation="CenterScreen"
+        Background="#8C4F25">
+
+    <Window.Resources>
+
+        <SolidColorBrush x:Key="Parchemin" Color="#F5D9A5"/>
+        <SolidColorBrush x:Key="Bois" Color="#A96832"/>
+        <SolidColorBrush x:Key="BoisClair" Color="#D99B52"/>
+
+        <Style x:Key="LettreStyle" TargetType="Button">
+            <Setter Property="Background" Value="#DDA65D"/>
+            <Setter Property="Foreground" Value="#48250E"/>
+            <Setter Property="FontSize" Value="24"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Margin" Value="4"/>
+            <Setter Property="BorderBrush" Value="#8C4F25"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ActionStyle" TargetType="Button">
+            <Setter Property="Background" Value="#C9843E"/>
+            <Setter Property="Foreground" Value="#48250E"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="15,8"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="BorderBrush" Value="#75401D"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid Margin="12">
+        <Border Background="#D99B52"
+                CornerRadius="20"
+                BorderBrush="#603315"
+                BorderThickness="5"
+                Padding="15">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="85"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="110"/>
+                </Grid.RowDefinitions>
+
+                <!-- TITRE -->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Background="#8C4F25"
+                            CornerRadius="15"
+                            Padding="15"
+                            HorizontalAlignment="Left">
+                        <TextBlock Text="HANGMAN"
+                                   FontSize="38"
+                                   FontWeight="Black"
+                                   Foreground="#FFE2A7"/>
+                    </Border>
+
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal">
+                        <Button Content="?"
+                                x:Name="BTN_Aide"
+                                Style="{StaticResource ActionStyle}"
+                                Width="55"
+                                Click="Aide_Click"/>
+
+                        <Button Content="Ⅱ"
+                                x:Name="BTN_Pause"
+                                Style="{StaticResource ActionStyle}"
+                                Width="55"
+                                Click="Pause_Click"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- ZONE CENTRALE -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.9*"/>
+                        <ColumnDefinition Width="1.2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- DESSIN DU BONHOMME -->
+                    <Border Grid.Column="0"
+                            Background="#F5D9A5"
+                            CornerRadius="20"
+                            Margin="5"
+                            Padding="10">
+
+                        <Canvas>
+
+                            <!-- POTENCE -->
+                            <Rectangle Canvas.Left="70"
+                                       Canvas.Top="100"
+                                       Width="25"
+                                       Height="300"
+                                       Fill="#A96832"
+                                       RadiusX="5"
+                                       RadiusY="5"/>
+
+                            <Rectangle Canvas.Left="70"
+                                       Canvas.Top="100"
+                                       Width="220"
+                                       Height="25"
+                                       Fill="#A96832"
+                                       RadiusX="5"
+                                       RadiusY="5"/>
+
+                            <Polygon Points="95,200 95,125 180,125"
+                                     Fill="#A96832"/>
+
+                            <Rectangle Canvas.Left="30"
+                                       Canvas.Top="400"
+                                       Width="310"
+                                       Height="25"
+                                       Fill="#8C4F25"
+                                       RadiusX="8"
+                                       RadiusY="8"/>
+
+                            <!-- TETE -->
+                            <Ellipse x:Name="RobotTete"
+                                     Canvas.Left="190"
+                                     Canvas.Top="180"
+                                     Width="95"
+                                     Height="95"
+                                     Fill="#D99B52"
+                                     Stroke="#8C4F25"
+                                     StrokeThickness="4"/>
+
+                            <!-- YEUX -->
+                            <Ellipse x:Name="OeilGauche"
+                                     Canvas.Left="215"
+                                     Canvas.Top="210"
+                                     Width="15"
+                                     Height="15"
+                                     Fill="#48250E"/>
+
+                            <Ellipse x:Name="OeilDroit"
+                                     Canvas.Left="250"
+                                     Canvas.Top="210"
+                                     Width="15"
+                                     Height="15"
+                                     Fill="#48250E"/>
+
+                            <!-- SOURIRE -->
+                            <Path x:Name="Sourire"
+                                  Data="M 215,240 Q 238,260 260,240"
+                                  Stroke="#48250E"
+                                  StrokeThickness="4"
+                                  Fill="Transparent"/>
+
+                            <!-- CORPS -->
+                            <Rectangle x:Name="RobotCorps"
+                                       Canvas.Left="215"
+                                       Canvas.Top="280"
+                                       Width="45"
+                                       Height="80"
+                                       Fill="#C9843E"
+                                       Stroke="#8C4F25"
+                                       StrokeThickness="3"
+                                       RadiusX="10"
+                                       RadiusY="10"/>
+
+                            <!-- BRAS GAUCHE -->
+                            <Line x:Name="BrasGauche"
+                                  X1="215" Y1="300"
+                                  X2="175" Y2="340"
+                                  Stroke="#8C4F25"
+                                  StrokeThickness="12"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"/>
+
+                            <!-- BRAS DROIT -->
+                            <Line x:Name="BrasDroit"
+                                  X1="260" Y1="300"
+                                  X2="300" Y2="340"
+                                  Stroke="#8C4F25"
+                                  StrokeThickness="12"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"/>
+
+                            <!-- JAMBE GAUCHE -->
+                            <Line x:Name="JambeGauche"
+                                  X1="225" Y1="360"
+                                  X2="210" Y2="395"
+                                  Stroke="#8C4F25"
+                                  StrokeThickness="12"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"/>
+
+                            <!-- JAMBE DROITE -->
+                            <Line x:Name="JambeDroite"
+                                  X1="250" Y1="360"
+                                  X2="265" Y2="395"
+                                  Stroke="#8C4F25"
+                                  StrokeThickness="12"
+                                  StrokeStartLineCap="Round"
+                                  StrokeEndLineCap="Round"/>
+
+                        </Canvas>
+                    </Border>
+
+                    <!-- ZONE DU JEU -->
+                    <Border Grid.Column="1"
+                            Background="#F5D9A5"
+                            CornerRadius="20"
+                            Margin="5"
+                            Padding="15">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="100"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- MOT A DEVINER -->
+                            <Border Grid.Row="0"
+                                    Background="#E8BD7D"
+                                    CornerRadius="12"
+                                    Padding="10">
+
+                                <StackPanel>
+                                    <TextBlock Text="Mot à deviner :"
+                                               FontSize="22"
+                                               FontWeight="Bold"
+                                               Foreground="#48250E"
+                                               HorizontalAlignment="Center"/>
+
+                                    <TextBlock x:Name="TB_Mot"
+                                               Text="_ _ _ _ _ _"
+                                               FontSize="30"
+                                               FontWeight="Bold"
+                                               Foreground="#48250E"
+                                               HorizontalAlignment="Center"
+                                               Margin="0,10,0,0"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- CLAVIER -->
+                            <UniformGrid Grid.Row="1"
+                                         Columns="7"
+                                         Margin="0,15,0,0">
+
+                                <Button x:Name="BTN_A" Content="A" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_B" Content="B" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_C" Content="C" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_D" Content="D" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_E" Content="E" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_F" Content="F" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_G" Content="G" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+
+                                <Button x:Name="BTN_H" Content="H" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_I" Content="I" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_J" Content="J" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_K" Content="K" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_L" Content="L" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_M" Content="M" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_N" Content="N" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+
+                                <Button x:Name="BTN_O" Content="O" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_P" Content="P" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_Q" Content="Q" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_R" Content="R" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_S" Content="S" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_T" Content="T" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_U" Content="U" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+
+                                <Button x:Name="BTN_V" Content="V" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_W" Content="W" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_X" Content="X" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_Y" Content="Y" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+                                <Button x:Name="BTN_Z" Content="Z" Style="{StaticResource LettreStyle}" Click="Lettre_Click"/>
+
+                            </UniformGrid>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- ZONE DU BAS -->
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Background="#A96832"
+                            CornerRadius="15"
+                            Padding="15"
+                            Margin="5">
+
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+
+                            <TextBlock Text="Vies restantes :"
+                                       FontSize="24"
+                                       FontWeight="Bold"
+                                       Foreground="#FFE2A7"
+                                       VerticalAlignment="Center"/>
+
+                            <TextBlock x:Name="TB_Vies"
+                                       Text="♥ ♥ ♥ ♥ ♥ ♥"
+                                       FontSize="30"
+                                       Foreground="Red"
+                                       Margin="20,0,0,0"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Button Grid.Column="1"
+                            x:Name="BTN_Rejouer"
+                            Content="⟳  Rejouer"
+                            Style="{StaticResource ActionStyle}"
+                            Width="180"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Click="Rejouer_Click"/>
+
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
