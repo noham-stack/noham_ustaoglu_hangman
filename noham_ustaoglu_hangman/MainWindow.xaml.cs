@@ -10,7 +10,7 @@ namespace NohamCalculette
 {
     public partial class MainWindow : Window
     {
-        // Liste des mots
+        // Liste des mots à deviner
         string[] mots =
         {
             "ORDINATEUR",
@@ -28,14 +28,17 @@ namespace NohamCalculette
             "SECRET",
             "ALGORITHME",
             "VARIABLE",
-            "FONCTION",
+            "FONCTION"
+
         };
 
         // Variables du jeu
         string motSecret;
+
         List<char> lettresTrouvees = new List<char>();
 
         int vies = 6;
+
         bool partieTerminee = false;
 
         Random hasard = new Random();
@@ -47,15 +50,16 @@ namespace NohamCalculette
             NouvellePartie();
         }
 
-        // Commencer une nouvelle partie
+        // Démarrer une nouvelle partie
         void NouvellePartie()
         {
-            // Choisir un mot au hasard
+            // Choisir un mot aléatoire
             motSecret = mots[hasard.Next(mots.Length)];
 
             lettresTrouvees.Clear();
 
             vies = 6;
+
             partieTerminee = false;
 
             // Réactiver toutes les lettres
@@ -66,11 +70,13 @@ namespace NohamCalculette
                 bouton.IsEnabled = true;
 
                 bouton.Background =
-                    new SolidColorBrush(Color.FromRgb(221, 166, 93));
+                    new SolidColorBrush(Color.FromRgb(23, 18, 20));
             }
 
             AfficherMot();
+
             AfficherVies();
+
             ActualiserRobot();
         }
 
@@ -94,7 +100,7 @@ namespace NohamCalculette
             TB_Mot.Text = affichage.Trim();
         }
 
-        // Afficher les vies restantes
+        // Afficher les vies
         void AfficherVies()
         {
             string coeurs = "";
@@ -112,46 +118,37 @@ namespace NohamCalculette
             TB_Vies.Text = coeurs;
         }
 
-        // Faire disparaître les membres du robot
+        // Faire disparaître les membres du personnage
         void ActualiserRobot()
         {
             int erreurs = 6 - vies;
 
-            // Première erreur : bras gauche
+            // 1 erreur : bras gauche
             BrasGauche.Visibility = erreurs >= 1
                 ? Visibility.Hidden : Visibility.Visible;
 
-            // Deuxième erreur : bras droit
+            // 2 erreurs : bras droit
             BrasDroit.Visibility = erreurs >= 2
                 ? Visibility.Hidden : Visibility.Visible;
 
-            // Troisième erreur : jambe gauche
+            // 3 erreurs : jambe gauche
             JambeGauche.Visibility = erreurs >= 3
                 ? Visibility.Hidden : Visibility.Visible;
 
-            // Quatrième erreur : jambe droite
+            // 4 erreurs : jambe droite
             JambeDroite.Visibility = erreurs >= 4
                 ? Visibility.Hidden : Visibility.Visible;
 
-            // Cinquième erreur : corps
+            // 5 erreurs : corps
             RobotCorps.Visibility = erreurs >= 5
                 ? Visibility.Hidden : Visibility.Visible;
 
-            // Sixième erreur : tête
+            // 6 erreurs : tête
             RobotTete.Visibility = erreurs >= 6
-                ? Visibility.Hidden : Visibility.Visible;
-
-            OeilGauche.Visibility = erreurs >= 6
-                ? Visibility.Hidden : Visibility.Visible;
-
-            OeilDroit.Visibility = erreurs >= 6
-                ? Visibility.Hidden : Visibility.Visible;
-
-            Sourire.Visibility = erreurs >= 6
                 ? Visibility.Hidden : Visibility.Visible;
         }
 
-        // Quand le joueur clique sur une lettre
+        // Quand le joueur choisit une lettre
         private void Lettre_Click(object sender, RoutedEventArgs e)
         {
             if (partieTerminee)
@@ -163,16 +160,17 @@ namespace NohamCalculette
 
             char lettre = bouton.Content.ToString()[0];
 
-            // Désactiver la lettre utilisée
+            // Désactiver la lettre choisie
             bouton.IsEnabled = false;
 
-            // Vérifier si la lettre est dans le mot
+            // Vérifier si la lettre est correcte
             if (motSecret.Contains(lettre))
             {
                 lettresTrouvees.Add(lettre);
 
+                // Couleur verte
                 bouton.Background =
-                    new SolidColorBrush(Color.FromRgb(105, 180, 65));
+                    new SolidColorBrush(Color.FromRgb(40, 130, 65));
 
                 AfficherMot();
 
@@ -180,10 +178,11 @@ namespace NohamCalculette
             }
             else
             {
-                vies--;
-
+                // Couleur rouge
                 bouton.Background =
-                    new SolidColorBrush(Color.FromRgb(220, 65, 55));
+                    new SolidColorBrush(Color.FromRgb(150, 20, 35));
+
+                vies--;
 
                 AfficherVies();
 
@@ -193,7 +192,7 @@ namespace NohamCalculette
             }
         }
 
-        // Vérifier si le joueur a gagné
+        // Vérifier la victoire
         void VerifierVictoire()
         {
             bool gagne = true;
@@ -203,6 +202,7 @@ namespace NohamCalculette
                 if (!lettresTrouvees.Contains(lettre))
                 {
                     gagne = false;
+
                     break;
                 }
             }
@@ -213,7 +213,7 @@ namespace NohamCalculette
 
                 MessageBox.Show(
                     "Bravo ! Tu as trouvé le mot : " + motSecret,
-                    "Victoire",
+                    "VICTOIRE",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
@@ -221,18 +221,19 @@ namespace NohamCalculette
             }
         }
 
-        // Vérifier si le joueur a perdu
+        // Vérifier la défaite
         void VerifierDefaite()
         {
             if (vies == 0)
             {
                 partieTerminee = true;
 
+                // Afficher le mot secret
                 TB_Mot.Text = string.Join(" ", motSecret.ToCharArray());
 
                 MessageBox.Show(
-                    "Tu as perdu ! Le mot était : " + motSecret,
-                    "Défaite",
+                    "Tu as perdu !\n\nLe mot était : " + motSecret,
+                    "DEFAITE",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
 
@@ -261,13 +262,12 @@ namespace NohamCalculette
         private void Aide_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show(
-                "Bienvenue dans Hangman !\n\n" +
-                "Le but est de trouver le mot secret.\n" +
-                "Clique sur les lettres pour découvrir le mot.\n\n" +
+                "Bienvenue dans HANGMAN !\n\n" +
+                "Trouve le mot secret en choisissant les lettres.\n\n" +
                 "Une mauvaise réponse fait disparaître un membre.\n" +
                 "Tu disposes de 6 vies.\n\n" +
                 "Bonne chance !",
-                "Aide",
+                "AIDE",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);
         }
@@ -278,8 +278,9 @@ namespace NohamCalculette
             if (!partieTerminee)
             {
                 MessageBox.Show(
-                    "Partie en pause.\nClique sur OK pour reprendre.",
-                    "Pause",
+                    "La partie est en pause.\n\n" +
+                    "Clique sur OK pour reprendre.",
+                    "PAUSE",
                     MessageBoxButton.OK,
                     MessageBoxImage.Information);
             }
