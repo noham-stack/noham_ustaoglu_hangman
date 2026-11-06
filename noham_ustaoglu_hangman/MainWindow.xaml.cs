@@ -24,7 +24,11 @@ namespace NohamCalculette
             "INTERNET",
             "CALCULATRICE",
             "ELECTRONIQUE",
-            "DEVELOPPEUR"
+            "DEVELOPPEUR",
+            "SECRET",
+            "ALGORITHME",
+            "VARIABLE",
+            "FONCTION",
         };
 
         // Variables du jeu
