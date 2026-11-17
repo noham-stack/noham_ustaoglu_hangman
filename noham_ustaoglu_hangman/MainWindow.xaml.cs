@@ -13,23 +13,7 @@ namespace NohamCalculette
         // Liste des mots à deviner
         string[] mots =
         {
-            "ORDINATEUR",
-            "PROGRAMME",
-            "CLAVIER",
-            "SOURIS",
-            "VISUALSTUDIO",
-            "WINDOWS",
-            "ROBOT",
-            "RESEAU",
-            "INTERNET",
-            "CALCULATRICE",
-            "ELECTRONIQUE",
-            "DEVELOPPEUR",
-            "SECRET",
-            "ALGORITHME",
-            "VARIABLE",
-            "FONCTION"
-
+            "ORDINATEUR","PROGRAMMATION","DEVELOPPEMENT","ALGORITHME","VARIABLE","FONCTION","BOUCLE","CONDITION","TABLEAU","CLASSE",
         };
 
         // Variables du jeu
