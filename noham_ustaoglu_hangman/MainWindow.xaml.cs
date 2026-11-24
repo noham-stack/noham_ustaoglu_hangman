@@ -13,7 +13,7 @@ namespace NohamCalculette
         // Liste des mots à deviner
         string[] mots =
         {
-            "ORDINATEUR","PROGRAMMATION","DEVELOPPEMENT","ALGORITHME","VARIABLE","FONCTION","BOUCLE","CONDITION","TABLEAU","CLASSE",
+            "CADILLAC","PORSCHE","FERRARI","LAMBORGHINI","MCLAREN","BUGATTI","ASTONMARTIN","JAGUAR","MASERATI","TESLA", 
         };
 
         // Variables du jeu
